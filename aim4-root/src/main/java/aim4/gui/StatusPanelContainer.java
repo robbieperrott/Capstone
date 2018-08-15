@@ -35,6 +35,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import aim4.gui.statuspanel.ConsolePanel;
+import aim4.gui.statuspanel.PedestrianButtonPanel;
 import aim4.gui.statuspanel.AdminControlPanel;
 import aim4.gui.statuspanel.SimControlPanel;
 import aim4.gui.statuspanel.StatPanel;
@@ -65,6 +66,8 @@ public class StatusPanelContainer extends JTabbedPane
   VehicleInfoPanel vehicleInfoPanel;
   /** The administration control panel */
   AdminControlPanel adminControlPanel;
+  //The pedestrian button panel. Part of prototype. 
+  PedestrianButtonPanel pedestrianButtonPanel;
 
   // ///////////////////////////////
   // CLASS CONSTRUCTORS
@@ -88,6 +91,10 @@ public class StatusPanelContainer extends JTabbedPane
     add("Vehicle", vehicleInfoPanel);
     adminControlPanel = new AdminControlPanel(viewer);
     add("Admin", adminControlPanel);
+    
+    // The pedestrian button panel. Part of prototype. 
+    pedestrianButtonPanel = new PedestrianButtonPanel(viewer);
+    add("Buttons", pedestrianButtonPanel);
 
     addChangeListener(this);
   }
