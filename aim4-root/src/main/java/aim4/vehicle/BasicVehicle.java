@@ -38,9 +38,12 @@ import java.util.List;
 
 import aim4.config.Constants;
 import aim4.config.Debug;
+import aim4.config.SimConfig;
 import aim4.driver.Driver;
+import aim4.map.DataCollectionLine;
 import aim4.map.track.TrackPosition;
 import aim4.noise.DoubleGauge;
+import aim4.sim.AutoDriverOnlySimulator;
 import aim4.util.GeomMath;
 import aim4.util.GeomUtil;
 import aim4.util.Util;
@@ -48,7 +51,7 @@ import aim4.util.Util;
 /**
  * The most basic form of a vehicle.
  */
-public abstract class BasicVehicle implements VehicleSimView {
+public abstract class BasicVehicle implements VehicleSimView, Runnable {
 
   /////////////////////////////////
   // CONSTANTS
@@ -1516,8 +1519,19 @@ public abstract class BasicVehicle implements VehicleSimView {
   /////////////////////////////////
   // PUBLIC METHODS
   /////////////////////////////////
-  //@Override
-  //public void run()
+  @Override
+  public void run(){
+      Point2D p1 = this.getPosition();
+      move(SimConfig.TIME_STEP);
+      Point2D p2 = this.getPosition();
+      for(DataCollectionLine line : AutoDriverOnlySimulator.basicMap.getDataCollectionLines()) {
+        line.intersect(this, currentTime, p1, p2);
+      }
+      if (Debug.isPrintVehicleStateOfVIN(this.getVIN())) {
+        this.printState();
+      }
+      AutoDriverOnlySimulator.CountDown.countDown();
+  }
   // coontrol
 
   /**

@@ -113,7 +113,7 @@ public class AutoDriverOnlySimulator implements Simulator {
   /////////////////////////////////
 
   /** The map */
-  private BasicMap basicMap;
+  public static BasicMap basicMap;
   /** All active vehicles, in form of a map from VINs to vehicle objects. */
   private Map<Integer,VehicleSimView> vinToVehicles;
   /** The current time */
@@ -170,7 +170,7 @@ public class AutoDriverOnlySimulator implements Simulator {
       System.err.printf("------SIM:letDriversAct---------------\n");
     }
     try{
-    letDriversAct();}catch(Exception e){System.out.println(e);};
+    letDriversAct();
     
     if (Debug.PRINT_SIMULATOR_STAGE) {
       System.err.printf("------SIM:letIntersectionManagersAct--------------\n");
@@ -183,7 +183,7 @@ public class AutoDriverOnlySimulator implements Simulator {
     if (Debug.PRINT_SIMULATOR_STAGE) {
       System.err.printf("------SIM:moveVehicles---------------\n");
     }
-    moveVehicles(timeStep);
+    moveVehicles(timeStep);}catch(Exception e){System.out.println(e);};
     if (Debug.PRINT_SIMULATOR_STAGE) {
       System.err.printf("------SIM:cleanUpCompletedVehicles---------------\n");
     }
@@ -909,18 +909,13 @@ public class AutoDriverOnlySimulator implements Simulator {
    *
    * @param timeStep  the time step
    */
-  private void moveVehicles(double timeStep) {
+  private void moveVehicles(double timeStep) throws InterruptedException {
+    CountDown = new CountDownLatch(vinToVehicles.values().size());
     for(VehicleSimView vehicle : vinToVehicles.values()) {
-      Point2D p1 = vehicle.getPosition();
-      vehicle.move(timeStep);
-      Point2D p2 = vehicle.getPosition();
-      for(DataCollectionLine line : basicMap.getDataCollectionLines()) {
-        line.intersect(vehicle, currentTime, p1, p2);
-      }
-      if (Debug.isPrintVehicleStateOfVIN(vehicle.getVIN())) {
-        vehicle.printState();
-      }
+      Thread thread = new Thread(vehicle);
+      thread.start();
     }
+    CountDown.await();
   }
 
 
