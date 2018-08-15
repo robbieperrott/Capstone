@@ -77,7 +77,10 @@ public class CrashTestDummy extends Driver {
   /////////////////////////////////
   // PUBLIC METHODS
   /////////////////////////////////
-
+  @Override
+  public void run(){
+      
+  }
   /**
    * Take steering actions to guide a test vehicle through a simulated
    * traversal of the intersection.

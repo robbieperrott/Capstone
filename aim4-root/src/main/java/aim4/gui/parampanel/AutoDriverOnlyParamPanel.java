@@ -48,7 +48,8 @@ public class AutoDriverOnlyParamPanel extends JPanel {
   LabeledSlider numOfColumnSlider;
   LabeledSlider numOfRowSlider;
   LabeledSlider lanesPerRoadSlider;
-
+  LabeledSlider pedestrians;
+  LabeledSlider maxWait;
   /**
    * Create the autonomous driver only simulation parameter panel.
    *
@@ -58,7 +59,6 @@ public class AutoDriverOnlyParamPanel extends JPanel {
     setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
     // create the components
-
     trafficRateSlider =
       new LabeledSlider(0.0, 2500.0,
                         simSetup.getTrafficLevel() * 3600.0,
@@ -107,6 +107,19 @@ public class AutoDriverOnlyParamPanel extends JPanel {
                         "%.0f");
     add(lanesPerRoadSlider);
 
+    pedestrians= new LabeledSlider(0.0, 100.0,
+                        50.0,
+                        20, 5,
+                        "Pedestrian Level: %.0f",
+                        "%.0f");
+    add(pedestrians);
+    
+    maxWait = new LabeledSlider(0.0, 100.0,
+                        50.0,
+                        20, 5,
+                        "Max wit time for pedestrians: %.0f seconds",
+                        "%.0f");
+    add(maxWait);
 
   }
 
